@@ -1,0 +1,48 @@
+name: CodeceptJS web flows
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      BASE_URL: https://www.selenium.dev/selenium/web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: npm ci --ignore-scripts
+      - run: npx playwright install --with-deps chromium
+      - run: python scripts/summary.py --self-test
+      - id: tests
+        name: Hosted Selenium form and dynamic controls
+        run: npm test
+      - name: Summary and result gate
+        if: always()
+        env:
+          EXPECTED_TESTS: '6'
+          TEST_OUTCOME: ${{ steps.tests.outcome }}
+          TEST_SCOPE: Chromium on the hosted Selenium test pages. Six UI scenarios; GET serialization is not backend persistence or file storage. No retries, no skipped cases.
+        run: python scripts/summary.py
+      - uses: actions/upload-artifact@v4
+        id: artifact
+        if: always()
+        with:
+          name: codeceptjs-results
+          path: results/
+          retention-days: 14
+          if-no-files-found: error
+      - name: Artifact link
+        if: always() && steps.artifact.outputs.artifact-url != ''
+        env:
+          ARTIFACT_URL: ${{ steps.artifact.outputs.artifact-url }}
+        run: printf '\n[JUnit, summary and Playwright traces](%s)\n' "$ARTIFACT_URL" >> "$GITHUB_STEP_SUMMARY"
