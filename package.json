@@ -4,8 +4,16 @@
   "private": true,
   "scripts": {
     "test": "node --env-file-if-exists=.env node_modules/codeceptjs/bin/codecept.js run --steps",
-    "check:summary": "python scripts/summary.py --self-test"
+    "check:summary": "python scripts/summary.py --self-test",
+    "prepare": "husky",
+    "check:local": "git diff --cached --check && python scripts/summary.py --self-test"
   },
-  "devDependencies": {"codeceptjs": "4.2.0", "playwright": "1.63.0"},
-  "engines": {"node": ">=22.9"}
+  "devDependencies": {
+    "codeceptjs": "4.2.0",
+    "playwright": "1.63.0",
+    "husky": "9.1.7"
+  },
+  "engines": {
+    "node": ">=22.9"
+  }
 }

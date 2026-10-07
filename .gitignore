@@ -6,3 +6,4 @@ results/
 output/
 __pycache__/
 *.pyc
+.husky/_/
