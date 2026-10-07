@@ -17,6 +17,6 @@ exports.config = {
   },
   plugins: {
     junitReporter: { enabled: true, outputName: 'junit.xml', attachSteps: true },
-    screenshot: { enabled: true, on: 'fail' },
+    screenshot: { enabled: true, on: 'test' },
   },
 };

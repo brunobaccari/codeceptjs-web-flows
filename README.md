@@ -55,3 +55,7 @@ O alvo é uma página de teste pública, não um produto com regras de negócio 
 CodeceptJS 4.2.0 inclui dependências transitivas com alertas no `npm audit`; este projeto não declara a árvore livre de vulnerabilidades. Não aplique `audit fix --force` sem validar a migração sugerida. Não há servidor ou credencial de produção neste projeto.
 
 [Helper Playwright](https://codecept.io/playwright) · [Reporters CodeceptJS](https://codecept.io/reports)
+
+O summary do Actions lista cada cenário, duração, totais e motivo de bloqueio. O gate exige a quantidade prevista no workflow, sem falhas ou skips; JUnit ausente ou inválido reprova. O resumo também acompanha o artifact.
+
+Screenshots do estado final também são capturados nos testes de interface aprovados e ficam nos artifacts, fora do Git.
